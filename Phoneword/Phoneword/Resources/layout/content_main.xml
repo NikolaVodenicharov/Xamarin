@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -15,22 +15,28 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/enterPhonewordText" />
+        android:id="@+id/EnterPhonewordText" />
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/phoneNumberText"
+        android:id="@+id/PhoneNumberText"
         android:inputType="text"
         android:hint="1-855-XAMARIN" />
     <Button
         android:text="Translate"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/translateButton" />
+        android:id="@+id/TranslateButton" />
     <TextView
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/translatedPhonewordText" />
+        android:id="@+id/TranslatedPhonewordText" />
+    <Button
+        android:text="@string/translation_history"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/TranslateHistoryButton"
+        android:enabled="false" />
 
 </LinearLayout>
