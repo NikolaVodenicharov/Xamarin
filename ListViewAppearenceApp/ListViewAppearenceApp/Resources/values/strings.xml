@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">ListViewAppearenceApp</string>
+    <string name="action_settings">Settings</string>
+    <string-array name="items">
+      <item>Vegetables</item>
+      <item>Fruits</item>
+      <item>Flower</item>
+      <item>Buds</item>
+      <item>Legumes</item>
+      <item>Bulbs</item>
+      <item>Tubers</item>
+</string-array>
+</resources>

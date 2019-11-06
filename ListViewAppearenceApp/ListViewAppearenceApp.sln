@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29424.173
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ListViewAppearenceApp", "ListViewAppearenceApp\ListViewAppearenceApp.csproj", "{0EDD2B73-EA4F-498B-A6AE-C8CD10D99311}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0EDD2B73-EA4F-498B-A6AE-C8CD10D99311}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EDD2B73-EA4F-498B-A6AE-C8CD10D99311}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EDD2B73-EA4F-498B-A6AE-C8CD10D99311}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{0EDD2B73-EA4F-498B-A6AE-C8CD10D99311}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EDD2B73-EA4F-498B-A6AE-C8CD10D99311}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0EDD2B73-EA4F-498B-A6AE-C8CD10D99311}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DFAE65B6-BE2B-4CD9-99A7-D58B3EBE92FF}
+	EndGlobalSection
+EndGlobal
