@@ -15,6 +15,8 @@ namespace RecycleViewApp
 {
     public class PhotoAlbumAdapter : RecyclerView.Adapter
     {
+        public event EventHandler<int> ItemClick;
+
         private PhotoAlbum photoAlbum;
 
         public PhotoAlbumAdapter(PhotoAlbum photoAlbum)
@@ -30,7 +32,7 @@ namespace RecycleViewApp
                 .From(parent.Context)
                 .Inflate(Resource.Layout.PhotoCardView, parent, false);
 
-            var photoViewHolder = new PhotoViewHolder(itemView);
+            var photoViewHolder = new PhotoViewHolder(itemView, this.OnClick);
 
             return photoViewHolder;
         }
@@ -46,6 +48,11 @@ namespace RecycleViewApp
             photoViewHolder
                 .Caption
                 .Text = this.photoAlbum[position].Caption;
+        }
+
+        private void OnClick(int position)
+        {
+            this.ItemClick?.Invoke(this, position);
         }
     }
 }

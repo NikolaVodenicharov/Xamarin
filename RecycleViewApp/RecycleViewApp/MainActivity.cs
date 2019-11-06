@@ -23,6 +23,7 @@ namespace RecycleViewApp
 
             this.photoAlbum = new PhotoAlbum();
             this.adapter = new PhotoAlbumAdapter(this.photoAlbum);
+            this.adapter.ItemClick += this.OnItemClick;
 
             this.layoutManager = new LinearLayoutManager(this);
             this.recyclerView = FindViewById<RecyclerView>(Resource.Id.recyclerView);
@@ -35,6 +36,12 @@ namespace RecycleViewApp
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+
+        private void OnItemClick(object sender, int position)
+        {
+            int photoNumber = position + 1;
+            Toast.MakeText(this, $"Photo number is {photoNumber}.", ToastLength.Short).Show();
         }
     }
 }
