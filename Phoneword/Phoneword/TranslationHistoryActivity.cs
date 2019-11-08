@@ -13,9 +13,6 @@ namespace Phoneword
         {
             base.OnCreate(bundle);
 
-            //var phoneNumbers = Intent.GetStringArrayListExtra(MainActivity.PhoneNumberKey) ?? new string[0];
-            //this.ListAdapter = new ArrayAdapter<string>(this, Resource.Layout.activity_transaction_history, phoneNumbers);
-
             var phoneNumbers = Intent.Extras.GetStringArrayList(MainActivity.PhoneNumberKey) ?? new string[0];
             this.ListAdapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItem1, phoneNumbers);
 
