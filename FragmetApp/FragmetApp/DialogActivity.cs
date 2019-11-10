@@ -19,8 +19,13 @@ namespace FragmetApp
         {
             base.OnCreate(savedInstanceState);
 
-            var dialogId = base.Intent.Extras.GetInt(TitlesFragment.TitleDialogIdKey, 0);
+            var isLandscape = Resources.Configuration.Orientation == Android.Content.Res.Orientation.Landscape;
+            if (isLandscape)
+            {
+                base.Finish();
+            }
 
+            var dialogId = base.Intent.Extras.GetInt(TitlesFragment.TitleDialogIdKey, 0);
             var dialogFragment = DialogFragment.CreateInstance(dialogId);
 
             base.FragmentManager
