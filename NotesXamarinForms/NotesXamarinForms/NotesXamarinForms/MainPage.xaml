@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="NotesXamarinForms.MainPage">
+
+    <StackLayout>
+        <!-- Place new controls here -->
+        <Label 
+           Text="Notes" 
+           HorizontalOptions="Center"
+           VerticalOptions="Start" 
+           FontAttributes="Bold" />
+        <Editor 
+            x:Name="editor"
+            Placeholder="Enter your note"
+            HeightRequest="100" />
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Button 
+                Text="Save" 
+                Clicked="OnSaveButtonClick"/>
+            <Button 
+                Grid.Column="1"
+                Text="Delete" 
+                Clicked="OnDeleteButtonClick"/>
+        </Grid>
+    </StackLayout>
+</ContentPage>
