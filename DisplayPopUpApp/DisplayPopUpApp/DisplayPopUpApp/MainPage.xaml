@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="DisplayPopUpApp.MainPage">
+
+    <StackLayout>
+        <Label Text="Pop Ups" 
+               HorizontalOptions="CenterAndExpand" 
+               Margin="0,20,0,0"/>
+        <Button Text="Display simple alert" 
+                Margin="0,20, 0, 0"
+                    Clicked="OnSimpleAlertClicked"/>
+        <Button Text="Display Yes or No alert"
+                Margin="0, 20, 0, 0"
+                Clicked="OnYesOrNoAlertClicked"/>
+        <Button Text="Display simple action sheet"
+                Margin="0, 20, 0, 0"
+                Clicked="OnSimpleActionSheetClicked"/>
+        <Button Text="Display destroyable action sheet"
+                Margin="0, 20, 0, 0"
+                Clicked="OnActionSheetClicked"/>
+    </StackLayout>
+
+</ContentPage>
