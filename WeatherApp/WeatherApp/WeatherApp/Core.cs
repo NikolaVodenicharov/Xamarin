@@ -13,7 +13,9 @@ namespace WeatherApp
         private const string ByCityName = "q=";
         private const string ApiKey = "&APPID=a19463a4a4aa7bf6878d97455fa05d1a";
         private const string MetricUnit = "&units=metric";
-        private const string Utc = "UTC";
+
+        private const string UtcKeyword = "UTC";
+        private const string CelsiusSymbol = "\u2103";
 
         public static async Task<Weather> GetWeatherByCityName(string cityName)
         {
@@ -29,18 +31,22 @@ namespace WeatherApp
 
             var weather = new Weather();
             weather.Title = (string)result["name"];
-            weather.Temperature = (string)result["main"]["temp"] + " \u2103";
+            weather.Temperature = (string)result["main"]["temp"] + " " + CelsiusSymbol;
             weather.Wind = (string)result["wind"]["speed"] + " km/h";
             weather.Humidity = (string)result["main"]["humidity"] + " %";
             weather.Visibility = (string)result["weather"][0]["main"];
 
             var unixTimeBeginning = new DateTime(1970, 1, 1, 0, 0, 0, 0);
+            var timeZoneCorrector = (long) result["timezone"];
 
-            var sunriseSecondsFromBeginning = (double)result["sys"]["sunrise"]; // (double) ?
-            var sunsetSecondsFromBeginning = (double)result["sys"]["sunset"];
+            var sunriseSecondsFromBeginning = (long)result["sys"]["sunrise"];
+            var sunsetSecondsFromBeginning = (long)result["sys"]["sunset"];
 
-            weather.Sunrise = unixTimeBeginning.AddSeconds(sunriseSecondsFromBeginning) + " " + Utc;
-            weather.Sunset = unixTimeBeginning.AddSeconds(sunsetSecondsFromBeginning) + " " + Utc;
+            var sunrise = unixTimeBeginning.AddSeconds(sunriseSecondsFromBeginning + timeZoneCorrector);
+            var sunset = unixTimeBeginning.AddSeconds(sunsetSecondsFromBeginning + timeZoneCorrector);
+
+            weather.Sunrise = $"{sunrise} {UtcKeyword}";
+            weather.Sunset = $"{sunset} {UtcKeyword}";
 
             return weather;
         }
