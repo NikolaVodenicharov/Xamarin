@@ -42,22 +42,19 @@
                 <StackLayout Orientation="Horizontal"       
                              HorizontalOptions="FillAndExpand"
                              BackgroundColor="#545454">
-                    <StackLayout Padding="10,10,10,10" 
-                                 HorizontalOptions="Start">
+                    <StackLayout Padding="10,20,10,10" 
+                                 HorizontalOptions="FillAndExpand">
                         <Label Text="Search by city name" 
                                TextColor="White" 
                                FontAttributes="Bold"
                                FontSize="Medium" />
-                        <Label x:Name="cityNameLabel" 
-                               Text="City name" 
-                               Style="{StaticResource labelStyle}" />
-                        <Entry x:Name="cityName" />
+                        <Entry x:Name="searchEntry" 
+                               Placeholder="Enter city"/>
                     </StackLayout>
-                    <StackLayout Padding="0,0,0,10" 
+                    <StackLayout Padding="0,0,10,10" 
                                  VerticalOptions="End">
                         <Button x:Name="getWeatherButton" 
-                                Text="Get Weather" 
-                                WidthRequest="185" 
+                                Text="Get Weather"  
                                 BorderWidth="1" 
                                 Clicked="OnGetWeatherButtonClicked">
                             <Button.TextColor>
@@ -73,6 +70,8 @@
                 </StackLayout>
                 <StackLayout Padding="10,10,10,10" 
                              HorizontalOptions="Start">
+                    <ListView x:Name="suggestionsList"
+                              IsVisible="False"/>
                     <Label Text="Location" 
                            Style="{StaticResource labelStyle}" />
                     <ContentView Style="{StaticResource fieldView}">
