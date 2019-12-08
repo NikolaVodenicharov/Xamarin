@@ -38,7 +38,7 @@ namespace WeatherApp.VIews
             }
 
 
-            var weather = await Core.GetWeatherByCityName(keyword);
+            var weather = await WeatherService.GetWeatherByCityName(keyword);
             if (weather == null)
             {
                 this.CityNotFoundAlert(keyword);

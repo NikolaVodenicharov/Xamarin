@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
-using WeatherApp.Models;
+using WeatherApp.Core.Models;
 using WeatherApp.Services;
 
 namespace WeatherApp
 {
-    public class Core
+    public class WeatherService
     {
         private const string BasePath = "http://api.openweathermap.org/data/2.5/weather?";
         private const string ByCityName = "q=";

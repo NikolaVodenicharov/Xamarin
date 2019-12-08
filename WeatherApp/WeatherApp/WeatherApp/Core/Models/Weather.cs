@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace WeatherApp.Models
+namespace WeatherApp.Core.Models
 {
     public class Weather
     {
