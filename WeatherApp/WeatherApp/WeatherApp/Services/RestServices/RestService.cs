@@ -5,11 +5,11 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WeatherApp.Services
+namespace WeatherApp.Services.RestServices
 {
-    public class DataService
+    public class RestService : IRestService
     {
-        public static async Task<dynamic> GetDataFromService(string queryString)
+        public async Task<dynamic> GetAsync(string queryString)
         {
             var client = new HttpClient();
             var response = await client.GetAsync(queryString);
@@ -23,6 +23,5 @@ namespace WeatherApp.Services
 
             return data;
         }
-
     }
 }

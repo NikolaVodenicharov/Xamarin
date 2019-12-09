@@ -6,6 +6,6 @@ namespace WeatherApp.Core.Repositories
 {
     public interface ICitySuggestionRepository
     {
-        ICollection<string> ReadByKeyword(string keyword = null);
+        ICollection<string> ReadByKeyword(string keyword = null, int limit = 5);
     }
 }

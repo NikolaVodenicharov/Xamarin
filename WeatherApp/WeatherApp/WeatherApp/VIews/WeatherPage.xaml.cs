@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-
+using WeatherApp.Core.Repositories;
+using WeatherApp.Data.Repositories;
+using WeatherApp.Services.FileServices;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -13,9 +12,13 @@ namespace WeatherApp.VIews
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class WeatherPage : ContentPage
     {
+        private IWeatherRepository repository;
+
         public WeatherPage()
         {
             InitializeComponent();
+
+            this.repository = new OpenWeatherApiRepository();
 
             this.searchEntry.TextChanged += this.OnSearchEntryTextChanged;
             this.suggestionsList.ItemTapped += this.OnSuggestionListItemtapped;
@@ -38,7 +41,7 @@ namespace WeatherApp.VIews
             }
 
 
-            var weather = await WeatherService.GetWeatherByCityName(keyword);
+            var weather = await repository.ReadByCityNameAsync(keyword);
             if (weather == null)
             {
                 this.CityNotFoundAlert(keyword);
