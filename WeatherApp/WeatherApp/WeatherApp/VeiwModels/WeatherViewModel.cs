@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
 using WeatherApp.Core.Models;
@@ -17,25 +15,92 @@ namespace WeatherApp.VeiwModels
         public event PropertyChangedEventHandler PropertyChanged;
 
         private IWeatherRepository repository;
+        private string searchEntryText = string.Empty;
+
+        private IList<string> citySuggestions;
+        private bool isSuggestionsVisible = false;
+        private string citySuggestionsSelectedItem;
+        private bool isEntryCitySuggestion = false;
 
         public WeatherViewModel()
         {
             repository = new OpenWeatherApiRepository();
-            GetWeatherCommand = new Command<string>(GetWeather);
+            GetWeatherCommand = new Command(GetWeather);
         }
 
-        public string Title { get; set; } = String.Empty;
-        public string Temperature { get; set; } = String.Empty;
-        public string Wind { get; set; } = String.Empty;
-        public string Humidity { get; set; } = String.Empty;
-        public string Visibility { get; set; } = String.Empty;
-        public string Sunrise { get; set; } = String.Empty;
-        public string Sunset { get; set; } = String.Empty;
+        public string Title { get; set; } = string.Empty;
+        public string Temperature { get; set; } = string.Empty;
+        public string Wind { get; set; } = string.Empty;
+        public string Humidity { get; set; } = string.Empty;
+        public string Visibility { get; set; } = string.Empty;
+        public string Sunrise { get; set; } = string.Empty;
+        public string Sunset { get; set; } = string.Empty;
 
         public ICommand GetWeatherCommand { get; private set; }
-
-        private async void GetWeather(string searchEntry)
+        public string SearchEntryText
         {
+            get => searchEntryText;
+            set
+            {
+                searchEntryText = value;
+
+                OnPropertyChanged(nameof(SearchEntryText));
+
+                //extract in method?
+                if (isEntryCitySuggestion)
+                {
+                    isEntryCitySuggestion = false;
+                }
+                else
+                {
+                    FillCitySuggestions(searchEntryText);
+                }
+            }
+        }
+        public IList<string> CitySuggestions 
+        { 
+            get => citySuggestions; 
+            set
+            {
+                if (citySuggestions != value)
+                {
+                    citySuggestions = value;
+                    OnPropertyChanged(nameof(CitySuggestions));
+                }
+            }
+        }
+        public string CitySuggestionsSelectedItem
+        { 
+            get => citySuggestionsSelectedItem; 
+            set
+            {
+                citySuggestionsSelectedItem = value;
+
+                if (citySuggestionsSelectedItem != null)
+                {
+                    OnCitySuggestionsSelectedItem();
+                }
+            }
+        }
+        public bool IsSuggestionsVisible 
+        { 
+            get => isSuggestionsVisible;
+            set
+            {
+                isSuggestionsVisible = value;
+                OnPropertyChanged(nameof(IsSuggestionsVisible));
+            }
+        }
+
+        private void OnPropertyChanged(string name)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
+        private async void GetWeather()
+        {
+            var searchEntry = SearchEntryText;
+
             if (string.IsNullOrEmpty(searchEntry))
             {
                 return;
@@ -56,10 +121,8 @@ namespace WeatherApp.VeiwModels
             else
             {
                 SetWeatherProperties(weather);
+                ClearSearchEntryText();
             }
-
-            //this.searchEntry.Text = string.Empty;
-            //this.searchEntry.Placeholder = "Enter city";
         }
         private void SetWeatherProperties(Weather weather)
         {
@@ -84,10 +147,36 @@ namespace WeatherApp.VeiwModels
             this.Sunset = weather.Sunset;
             OnPropertyChanged(nameof(Sunset));
         }
-
-        private void OnPropertyChanged(string name)
+        private void ClearSearchEntryText()
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            SearchEntryText = string.Empty;
+        }
+
+        private void FillCitySuggestions(string keyword)
+        {
+            if (string.IsNullOrEmpty(keyword))
+            {
+                return;
+            }
+
+            keyword = keyword.ToLower();
+
+            var suggestions = App
+                .cities.Where(c => c.ToLower().StartsWith(keyword))
+                .Take(5)
+                .ToList();
+
+            CitySuggestions = suggestions;
+
+            IsSuggestionsVisible = true;
+        }
+
+        private void OnCitySuggestionsSelectedItem()
+        {
+            SearchEntryText = citySuggestionsSelectedItem;
+            IsSuggestionsVisible = false;
+
+            // set suggestionCollection to null ?
         }
 
         //private async void CityNotFoundAlert(string cityName)
@@ -96,32 +185,6 @@ namespace WeatherApp.VeiwModels
         //        $"{cityName} was not found",
         //        "The city that you are searching is not found. Make sure that you type is correct.",
         //        "OK");
-        //}
-
-        //private void OnSearchEntryTextChanged(object sender, EventArgs args)
-        //{
-        //    var keyword = this.searchEntry.Text.ToLower();
-        //    if (String.IsNullOrEmpty(keyword))
-        //    {
-        //        return;
-        //    }
-
-        //    var suggestions = App
-        //        .cities.Where(c => c.ToLower().StartsWith(keyword))
-        //        .Take(5)
-        //        .ToList();
-
-        //    this.suggestionsList.ItemsSource = suggestions;
-        //    this.suggestionsList.IsVisible = true;
-        //}
-
-        //private void OnSuggestionListItemtapped(object sender, ItemTappedEventArgs e)
-        //{
-        //    var city = (string)e.Item;
-        //    this.searchEntry.Text = city;
-
-        //    this.suggestionsList.IsVisible = false;
-        //    this.suggestionsList.ItemsSource = null;
         //}
     }
 }

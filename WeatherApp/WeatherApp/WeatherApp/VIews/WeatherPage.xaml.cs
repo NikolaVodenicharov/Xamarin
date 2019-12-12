@@ -1,10 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Text.RegularExpressions;
-using WeatherApp.Core.Repositories;
-using WeatherApp.Data.Repositories;
-using WeatherApp.Services.FileServices;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace WeatherApp.VIews
@@ -54,13 +48,13 @@ namespace WeatherApp.VIews
         //    this.searchEntry.Text = string.Empty;
         //    this.searchEntry.Placeholder = "Enter city";
         //}
-        //private async void CityNotFoundAlert(string cityName)
-        //{
-        //    await DisplayAlert(
-        //        $"{cityName} was not found", 
-        //        "The city that you are searching is not found. Make sure that you type is correct.", 
-        //        "OK");
-        //}
+            //private async void citynotfoundalert(string cityname)
+            //{
+            //    await displayalert(
+            //        $"{cityname} was not found",
+            //        "the city that you are searching is not found. make sure that you type is correct.",
+            //        "ok");
+            //}
 
         //private void OnSearchEntryTextChanged(object sender, EventArgs args)
         //{
