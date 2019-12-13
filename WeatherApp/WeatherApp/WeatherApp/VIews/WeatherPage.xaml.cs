@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using WeatherApp.VeiwModels;
+using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace WeatherApp.VIews
@@ -12,74 +13,10 @@ namespace WeatherApp.VIews
         {
             InitializeComponent();
 
-            //this.repository = new OpenWeatherApiRepository();
-
-            //this.searchEntry.TextChanged += this.OnSearchEntryTextChanged;
-            //this.suggestionsList.ItemTapped += this.OnSuggestionListItemtapped;
+            MessagingCenter.Subscribe<WeatherViewModel>(this, WeatherViewModel.CityNotFoundMessageKey, async (sender) =>
+            {
+                await DisplayAlert("City was not found.", "We were unable to find input city in our data. Please check is the input a correct.", "OK");
+            });
         }
-
-        //private async void OnGetWeatherButtonClicked(object sender, EventArgs args)
-        //{
-        //    var keyword = searchEntry.Text;
-
-        //    if (String.IsNullOrEmpty(keyword))
-        //    {
-        //        return;
-        //    }
-
-        //    var isAutocompleteKeyword = keyword.Contains('(');
-        //    if (isAutocompleteKeyword)
-        //    {
-        //        var pattern = @"[A-Za-z \-]+(?=[(])";
-        //        keyword = Regex.Match(keyword, pattern).Value;
-        //    }
-
-
-        //    var weather = await repository.ReadByCityNameAsync(keyword);
-        //    if (weather == null)
-        //    {
-        //        this.CityNotFoundAlert(keyword);
-        //    }
-        //    else
-        //    {
-        //        this.BindingContext = weather;
-        //    }
-
-        //    this.searchEntry.Text = string.Empty;
-        //    this.searchEntry.Placeholder = "Enter city";
-        //}
-            //private async void citynotfoundalert(string cityname)
-            //{
-            //    await displayalert(
-            //        $"{cityname} was not found",
-            //        "the city that you are searching is not found. make sure that you type is correct.",
-            //        "ok");
-            //}
-
-        //private void OnSearchEntryTextChanged(object sender, EventArgs args)
-        //{
-        //    var keyword = this.searchEntry.Text.ToLower();
-        //    if (String.IsNullOrEmpty(keyword))
-        //    {
-        //        return;
-        //    }
-
-        //    var suggestions = App
-        //        .cities.Where(c => c.ToLower().StartsWith(keyword))
-        //        .Take(5)
-        //        .ToList();
-
-        //    this.suggestionsList.ItemsSource = suggestions;
-        //    this.suggestionsList.IsVisible = true;
-        //}
-
-        //private void OnSuggestionListItemtapped(object sender, ItemTappedEventArgs e)
-        //{
-        //    var city = (string)e.Item;
-        //    this.searchEntry.Text = city;
-
-        //    this.suggestionsList.IsVisible = false;
-        //    this.suggestionsList.ItemsSource = null;
-        //}
     }
 }

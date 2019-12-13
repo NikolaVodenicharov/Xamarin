@@ -12,6 +12,7 @@ namespace WeatherApp.VeiwModels
 {
     public class WeatherViewModel : INotifyPropertyChanged
     {
+        public const string CityNotFoundMessageKey = "City was not found.";
         public event PropertyChangedEventHandler PropertyChanged;
 
         private IWeatherRepository repository;
@@ -116,7 +117,7 @@ namespace WeatherApp.VeiwModels
             var weather = await repository.ReadByCityNameAsync((string)searchEntry);
             if (weather == null)
             {
-                //this.CityNotFoundAlert(keyword);
+                MessagingCenter.Send(this, CityNotFoundMessageKey);
             }
             else
             {
@@ -178,13 +179,5 @@ namespace WeatherApp.VeiwModels
 
             // set suggestionCollection to null ?
         }
-
-        //private async void CityNotFoundAlert(string cityName)
-        //{
-        //    await DisplayAlert(
-        //        $"{cityName} was not found",
-        //        "The city that you are searching is not found. Make sure that you type is correct.",
-        //        "OK");
-        //}
     }
 }
