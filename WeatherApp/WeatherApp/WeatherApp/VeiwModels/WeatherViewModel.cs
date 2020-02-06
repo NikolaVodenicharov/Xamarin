@@ -95,6 +95,18 @@ namespace WeatherApp.VeiwModels
 
             this.Sunset = weather.Sunset;
             OnPropertyChanged(nameof(Sunset));
+
+            IsWeatherInfoVisible = true;
+        }
+        private bool isWeatherInfoVisible = false;
+        public bool IsWeatherInfoVisible
+        {
+            get => isWeatherInfoVisible;
+            set
+            {
+                isWeatherInfoVisible = value;
+                OnPropertyChanged(nameof(IsWeatherInfoVisible));
+            }
         }
 
 
