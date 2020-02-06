@@ -15,7 +15,7 @@ namespace WeatherApp.VIews
 
             MessagingCenter.Subscribe<WeatherViewModel>(this, WeatherViewModel.CityNotFoundMessageKey, async (sender) =>
             {
-                await DisplayAlert("City was not found.", "We were unable to find input city in our data. Please check is the input a correct.", "OK");
+                await DisplayAlert("City was not found.", "We were unable to find the city in our data. Please check is the input a correct.", "OK");
             });
         }
     }

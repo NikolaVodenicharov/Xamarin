@@ -6,11 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Data\Files\Cities.txt" />
+    <None Remove="Data\Files\OrderedOpenWeatherCities.txt" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Data\Files\Cities.txt" />
+    <EmbeddedResource Include="Data\Files\OrderedOpenWeatherCities.txt" />
   </ItemGroup>
 
   <ItemGroup>

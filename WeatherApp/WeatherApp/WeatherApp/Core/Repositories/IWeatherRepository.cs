@@ -8,7 +8,7 @@ namespace WeatherApp.Core.Repositories
 {
     public interface IWeatherRepository
     {
-        Task<Weather> ReadByIdAsync(int id);
+        Task<Weather> ReadByIdAsync(string id);
         Task<Weather> ReadByCityNameAsync(string name);
         Task<Weather> ReadByLocationAsync(double latitude, double longitude);
     }

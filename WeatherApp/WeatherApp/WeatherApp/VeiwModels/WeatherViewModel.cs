@@ -13,15 +13,11 @@ namespace WeatherApp.VeiwModels
     public class WeatherViewModel : INotifyPropertyChanged
     {
         public const string CityNotFoundMessageKey = "City was not found.";
+        private static readonly char[] Digits = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', };
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private IWeatherRepository repository;
-        private string searchEntryText = string.Empty;
-
-        private IList<string> citySuggestions;
-        private bool isSuggestionsVisible = false;
-        private string citySuggestionsSelectedItem;
-        private bool isEntryCitySuggestion = false;
 
         public WeatherViewModel()
         {
@@ -38,60 +34,6 @@ namespace WeatherApp.VeiwModels
         public string Sunset { get; set; } = string.Empty;
 
         public ICommand GetWeatherCommand { get; private set; }
-        public string SearchEntryText
-        {
-            get => searchEntryText;
-            set
-            {
-                searchEntryText = value;
-
-                OnPropertyChanged(nameof(SearchEntryText));
-
-                //extract in method?
-                if (isEntryCitySuggestion)
-                {
-                    isEntryCitySuggestion = false;
-                }
-                else
-                {
-                    FillCitySuggestions(searchEntryText);
-                }
-            }
-        }
-        public IList<string> CitySuggestions 
-        { 
-            get => citySuggestions; 
-            set
-            {
-                if (citySuggestions != value)
-                {
-                    citySuggestions = value;
-                    OnPropertyChanged(nameof(CitySuggestions));
-                }
-            }
-        }
-        public string CitySuggestionsSelectedItem
-        { 
-            get => citySuggestionsSelectedItem; 
-            set
-            {
-                citySuggestionsSelectedItem = value;
-
-                if (citySuggestionsSelectedItem != null)
-                {
-                    OnCitySuggestionsSelectedItem();
-                }
-            }
-        }
-        public bool IsSuggestionsVisible 
-        { 
-            get => isSuggestionsVisible;
-            set
-            {
-                isSuggestionsVisible = value;
-                OnPropertyChanged(nameof(IsSuggestionsVisible));
-            }
-        }
 
         private void OnPropertyChanged(string name)
         {
@@ -107,14 +49,20 @@ namespace WeatherApp.VeiwModels
                 return;
             }
 
-            var isAutocompleteKeyword = searchEntry.Contains('(');
-            if (isAutocompleteKeyword)
+            Weather weather = null;
+            if (isEntryCitySuggestion)
             {
-                var pattern = @"[A-Za-z \-]+(?=[(])";
-                searchEntry = Regex.Match((string)searchEntry, pattern).Value;
+                isEntryCitySuggestion = false;
+
+                var cityId = CitySuggestions[searchEntry];
+
+                weather = await repository.ReadByIdAsync(cityId);
+            }
+            else
+            {
+                weather = await repository.ReadByCityNameAsync((string)searchEntry);
             }
 
-            var weather = await repository.ReadByCityNameAsync((string)searchEntry);
             if (weather == null)
             {
                 MessagingCenter.Send(this, CityNotFoundMessageKey);
@@ -148,11 +96,59 @@ namespace WeatherApp.VeiwModels
             this.Sunset = weather.Sunset;
             OnPropertyChanged(nameof(Sunset));
         }
+
+
+        private string searchEntryText = string.Empty;
+        public string SearchEntryText
+        {
+            get => searchEntryText;
+            set
+            {
+                searchEntryText = value;
+
+                OnPropertyChanged(nameof(SearchEntryText));
+
+                //extract in method?
+                if (isEntryCitySuggestion)
+                {
+                    isEntryCitySuggestion = false;
+                }
+                else
+                {
+                    FillCitySuggestions(searchEntryText);
+                }
+            }
+        }
+        private bool isEntryCitySuggestion = false;
         private void ClearSearchEntryText()
         {
             SearchEntryText = string.Empty;
         }
 
+
+        private IDictionary<string, string> citySuggestions = new Dictionary<string, string>();
+        public IDictionary<string, string> CitySuggestions 
+        {
+            get => citySuggestions;
+            set
+            {
+                if (citySuggestions != value)
+                {
+                    citySuggestions = value;
+                    OnPropertyChanged(nameof(CitySuggestions));
+                    OnPropertyChanged(nameof(CitySuggestionsList));
+                }
+            }
+        }
+        public IList<string> CitySuggestionsList
+        {
+            get => citySuggestions.Keys.ToList();
+        }
+        /// <summary>
+        /// Fill dictionery of sity suggestions.
+        /// The key is city name and country code.
+        /// The value is city id in "Open weather" site.
+        /// </summary>
         private void FillCitySuggestions(string keyword)
         {
             if (string.IsNullOrEmpty(keyword))
@@ -160,24 +156,68 @@ namespace WeatherApp.VeiwModels
                 return;
             }
 
+            isEntryCitySuggestion = false;
+
             keyword = keyword.ToLower();
 
             var suggestions = App
-                .cities.Where(c => c.ToLower().StartsWith(keyword))
+                .cities
+                .Where(c => c.ToLower().StartsWith(keyword))
                 .Take(5)
                 .ToList();
 
-            CitySuggestions = suggestions;
+            // values of data dictionery are never used
+            var data = new Dictionary<string, string>(5);
+
+            foreach (var suggestion in suggestions)
+            {
+                var idStartIndex = suggestion.IndexOfAny(Digits);
+
+                var cityWithCountry = suggestion.Substring(0, idStartIndex - 1);
+                var cityId = suggestion.Substring(idStartIndex);
+
+                data.Add(cityWithCountry, cityId);
+            }
+
+            //CitySuggestions = data.Keys.ToList();
+
+            CitySuggestions = data;
 
             IsSuggestionsVisible = true;
         }
 
+
+        private bool isSuggestionsVisible = false;
+        public bool IsSuggestionsVisible
+        {
+            get => isSuggestionsVisible;
+            set
+            {
+                isSuggestionsVisible = value;
+                OnPropertyChanged(nameof(IsSuggestionsVisible));
+            }
+        }
+
+
+        private string citySuggestionsSelectedItem;
+        public string CitySuggestionsSelectedItem
+        {
+            get => citySuggestionsSelectedItem;
+            set
+            {
+                citySuggestionsSelectedItem = value;
+
+                if (citySuggestionsSelectedItem != null)
+                {
+                    OnCitySuggestionsSelectedItem();
+                }
+            }
+        }
         private void OnCitySuggestionsSelectedItem()
         {
             SearchEntryText = citySuggestionsSelectedItem;
             IsSuggestionsVisible = false;
-
-            // set suggestionCollection to null ?
+            isEntryCitySuggestion = true;
         }
     }
 }

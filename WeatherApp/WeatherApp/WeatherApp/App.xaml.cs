@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reflection;
 using WeatherApp.VIews;
 using Xamarin.Forms;
@@ -9,12 +10,26 @@ namespace WeatherApp
 {
     public partial class App : Application
     {
-        public static IList<string> cities = new List<string>(18000);
+        public static IList<string> cities = new List<string>(169000);
 
         public App()
         {
             InitializeComponent();
+
+            var before = GC.GetTotalMemory(false);
+            var stopwatch = new Stopwatch();
+
+            stopwatch.Start();
             PopulateCities();
+
+            stopwatch.Stop();
+            var after = GC.GetTotalMemory(false);
+
+            var difference = after - before;
+            var time = stopwatch.ElapsedMilliseconds;
+
+            Console.WriteLine($"Time in milliseconds is: {time}.");
+            Console.WriteLine(difference);
 
             MainPage = new NavigationPage(new WeatherPage());
         }
@@ -27,7 +42,7 @@ namespace WeatherApp
             }
 
             var assemby = IntrospectionExtensions.GetTypeInfo(typeof(App)).Assembly;
-            var stream = assemby.GetManifestResourceStream("WeatherApp.Data.Files.Cities.txt");
+            var stream = assemby.GetManifestResourceStream("WeatherApp.Data.Files.OrderedOpenWeatherCities.txt");
 
             using (var reader = new System.IO.StreamReader(stream))
             {
