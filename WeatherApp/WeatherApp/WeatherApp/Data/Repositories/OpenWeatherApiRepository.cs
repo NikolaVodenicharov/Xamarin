@@ -10,9 +10,12 @@ namespace WeatherApp.Data.Repositories
 {
     public class OpenWeatherApiRepository : IWeatherRepository
     {
-        private const string BasePath = "http://api.openweathermap.org/data/2.5/weather?";
+        private const string BasePath = "https://api.openweathermap.org/data/2.5/weather?";
         private const string ByCityName = "q=";
         private const string ById = "id=";
+        private const string ByLatitude = "lat=";
+        private const string ByLongitude = "lon=";
+        private const char Ampersand = '&';
         private const string ApiKey = "&APPID=a19463a4a4aa7bf6878d97455fa05d1a";
         private const string MetricUnit = "&units=metric";
 
@@ -36,16 +39,6 @@ namespace WeatherApp.Data.Repositories
         public async Task<Weather> ReadByCityNameAsync(string name)
         {
             var queryString = BasePath + ByCityName + name + ApiKey + MetricUnit;
-            //dynamic data = await restService.GetAsync(queryString).ConfigureAwait(false);
-
-            //var isNull = data["weather"] == null;
-            //if (isNull)
-            //{
-            //    return null;
-            //}
-
-            //var weather = ExtractWeather(data);
-            //return weather;
 
             return await ExtractWeather(queryString);
         }
@@ -57,9 +50,11 @@ namespace WeatherApp.Data.Repositories
             return await ExtractWeather(queryString);
         }
 
-        public Task<Weather> ReadByLocationAsync(double latitude, double longitude)
+        public async Task<Weather> ReadByLocationAsync(double latitude, double longitude)
         {
-            throw new NotImplementedException();
+            var queryString = BasePath + ByLatitude + latitude + Ampersand + ByLongitude + longitude + ApiKey + MetricUnit;
+
+            return await ExtractWeather(queryString);
         }
 
         private async Task<Weather> ExtractWeather(string queryString)

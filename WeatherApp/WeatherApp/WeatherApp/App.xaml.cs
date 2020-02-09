@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Reflection;
 using WeatherApp.VIews;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace WeatherApp
 {

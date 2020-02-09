@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Windows.Input;
 using WeatherApp.Core.Models;
 using WeatherApp.Core.Repositories;
 using WeatherApp.Data.Repositories;
 using Xamarin.Forms;
+using Xamarin.Essentials;
+using System;
 
 namespace WeatherApp.VeiwModels
 {
@@ -23,6 +24,8 @@ namespace WeatherApp.VeiwModels
         {
             repository = new OpenWeatherApiRepository();
             GetWeatherCommand = new Command(GetWeather);
+
+            GetWeatherByCurrentLocationAsync();
         }
 
         public string Title { get; set; } = string.Empty;
@@ -230,6 +233,31 @@ namespace WeatherApp.VeiwModels
             SearchEntryText = citySuggestionsSelectedItem;
             IsSuggestionsVisible = false;
             isEntryCitySuggestion = true;
+        }
+
+        // initial city weather by current location
+        private async void GetWeatherByCurrentLocationAsync()
+        {
+            try
+            {
+                //var latitude = 42.06;
+                //var longitude = 24.765;
+                //var weather = await repository.ReadByLocationAsync(latitude, longitude);
+                //SetWeatherProperties(weather);
+
+                var request = new GeolocationRequest(GeolocationAccuracy.Medium);
+                var location = await Geolocation.GetLocationAsync(request); 
+
+                if (location != null)
+                {
+                    var weather = await repository.ReadByLocationAsync(location.Latitude, location.Longitude);
+                    SetWeatherProperties(weather);
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
         }
     }
 }
