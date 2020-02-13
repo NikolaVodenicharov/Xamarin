@@ -240,19 +240,19 @@ namespace WeatherApp.VeiwModels
         {
             try
             {
-                //var latitude = 42.06;
-                //var longitude = 24.765;
-                //var weather = await repository.ReadByLocationAsync(latitude, longitude);
-                //SetWeatherProperties(weather);
+                var latitude = 42.06;
+                var longitude = 24.765;
+                var weather = await repository.ReadByLocationAsync(latitude, longitude);
+                SetWeatherProperties(weather);
 
-                var request = new GeolocationRequest(GeolocationAccuracy.Medium);
-                var location = await Geolocation.GetLocationAsync(request); 
+                //var request = new GeolocationRequest(GeolocationAccuracy.Medium);
+                //var location = await Geolocation.GetLocationAsync(request); 
 
-                if (location != null)
-                {
-                    var weather = await repository.ReadByLocationAsync(location.Latitude, location.Longitude);
-                    SetWeatherProperties(weather);
-                }
+                //if (location != null)
+                //{
+                //    var weather = await repository.ReadByLocationAsync(location.Latitude, location.Longitude);
+                //    SetWeatherProperties(weather);
+                //}
             }
             catch (Exception e)
             {

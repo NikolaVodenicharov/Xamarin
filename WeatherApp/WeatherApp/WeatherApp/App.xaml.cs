@@ -30,6 +30,8 @@ namespace WeatherApp
             Console.WriteLine($"Time in milliseconds is: {time}.");
             Console.WriteLine(difference);
 
+            
+
             MainPage = new NavigationPage(new WeatherPage());
         }
 
